@@ -44,9 +44,9 @@ pipeline{
                 sh """
                     scp -o StrictHostKeyChecking=no target/myweb-8.2.0.war  root@192.168.56.113 :/root/apache-tomcat-9.0.82/webapps/
                     
-                    ssh root@192.168.56.113  /root/apache-tomcat-9.0.82/bin/shutdown.sh
+                    ssh root@192.168.56.113  "/root/apache-tomcat-9.0.82/bin/shutdown.sh"
                     
-                    ssh root@192.168.56.113  /root/apache-tomcat-9.0.82/bin/startup.sh
+                    ssh root@192.168.56.113  "/root/apache-tomcat-9.0.82/bin/startup.sh"
                 
                 """
             }
