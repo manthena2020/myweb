@@ -40,7 +40,7 @@ pipeline{
             }
         stage("deploy-dev"){
             steps{
-                sshagent(['tomcat-new']) {
+                sshagent(['ravi']) {
                 sh """
                     scp -o StrictHostKeyChecking=no target/myweb-8.2.0.war  root@192.168.56.113 :/root/apache-tomcat-9.0.82/webapps/
                     
