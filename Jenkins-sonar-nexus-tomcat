@@ -29,7 +29,7 @@ pipeline{
                             type: 'war'
                        ]
                   ], 
-                  credentialsId: 'eb5a308e-90bb-4ece-8f18-3e10accb3b14', 
+                  credentialsId: 'ravisshpassword', 
                   groupId: 'in.javahome', 
                   nexusUrl: '192.168.56.113:8090', 
                   nexusVersion: 'nexus3', 
