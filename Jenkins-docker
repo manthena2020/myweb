@@ -45,15 +45,10 @@ pipeline{
                  sh "docker run -itd --name ravitom -p 3800:8080 tomcat:${BUILD_NUMBER}"
              }
          }
-
-		stage('Push Docker Image'){
+        stage('Push Docker Image'){
              steps{
-			      sshagent(['3ee38862-463c-4483-a6dd-61babad697e9']) {
-				  sh """
-				      ssh root@192.168.56.113 
-                      withCredentials([string(credentialsId: 'dockercrenditals', variable: 'dockercred')]) {
+                  withCredentials([string(credentialsId: 'dockercrenditals', variable: 'dockercred')]) {
                       sh "docker login -u manthena2020 -p ${dockercred}"
-				"""
             }
             sh 'docker push manthenasmiles/softwares'
         }
