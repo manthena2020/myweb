@@ -1,0 +1,64 @@
+pipeline{
+    agent any
+     tools {
+        maven 'Maven-3.6.1'
+    }
+    
+    environment{
+        PATH = "/opt/maven3/bin:$PATH"
+    }
+    stages{
+        stage("Git Checkout"){
+            steps{
+                git credentialsId: 'javahome2', url: 'https://github.com/manthena2020/myweb.git'
+            }
+        }
+        stage("Maven Build"){
+            steps{
+                sh "mvn clean sonar:sonar package"
+                
+            }
+        }
+        stage('Upload War To Nexus'){
+            steps{
+                  nexusArtifactUploader artifacts: [
+                       [
+                            artifactId: 'myweb', 
+                            classifier: '', 
+                            file: "target/myweb-8.2.22.war", 
+                            type: 'war'
+                       ]
+                  ], 
+                  credentialsId: 'nexus', 
+                  groupId: 'in.javahome', 
+                  nexusUrl: '192.168.56.113:8090', 
+                  nexusVersion: 'nexus3', 
+                  protocol: 'http', 
+                  repository: 'sample-releases', 
+                  version: '8.2.22'  
+              }
+            }
+        stage('Build Docker Image'){
+            steps{
+                 sh "docker build -t manthenasmiles/softwares ."
+                 sh "docker build -t tomcat:${BUILD_NUMBER} ."
+                 sh "docker run -itd --name ravitom -p 3800:8080 tomcat:${BUILD_NUMBER}"
+             }
+         }
+
+		stage('Push Docker Image'){
+             steps{
+			      sshagent(['3ee38862-463c-4483-a6dd-61babad697e9']) {
+				  sh """
+				      ssh root@192.168.56.113 
+                      withCredentials([string(credentialsId: 'dockercrenditals', variable: 'dockercred')]) {
+                      sh "docker login -u manthena2020 -p ${dockercred}"
+				"""
+            }
+            sh 'docker push manthenasmiles/softwares'
+        }
+      }
+        
+        
+    }
+}
