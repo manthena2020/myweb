@@ -40,17 +40,17 @@ pipeline{
             }
         stage('Build Docker Image'){
             steps{
-                 sh 'docker build -t manthenasmiles/dev123 .'
+                 sh 'docker build -t manthenasmiles/softwares .'
                  sh 'docker build -t tomcat:${BUILD_NUMBER} .'
                  sh 'docker run -itd --name ravitom -p 3800:8080 tomcat:${BUILD_NUMBER}'
              }
          }
         stage('Push Docker Image'){
              steps{
-                  withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-                      sh "docker login -u srinidockerhub87 -p ${DOCKER_HUB_CREDENTIALS}"
+                  withCredentials([string(credentialsId: 'dockercrenditals', variable: 'dockercred')]) {
+                      sh "docker login -u manthena2020 -p ${dockercrenditals}"
             }
-            sh 'docker push srinidockerhub87/spring-boot-mongo'
+            sh 'docker push manthenasmiles/softwares'
         }
       }
         
