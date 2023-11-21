@@ -25,17 +25,17 @@ pipeline{
                        [
                             artifactId: 'myweb', 
                             classifier: '', 
-                            file: "target/myweb-8.2.0.war", 
+                            file: "target/myweb-8.2.22.war", 
                             type: 'war'
                        ]
                   ], 
-                  credentialsId: 'nexus3', 
+                  credentialsId: 'nexus', 
                   groupId: 'in.javahome', 
-                  nexusUrl: '172.31.11.186:8081', 
+                  nexusUrl: '192.168.56.113:8090', 
                   nexusVersion: 'nexus3', 
                   protocol: 'http', 
                   repository: 'sample-releases', 
-                  version: '8.2.0'  
+                  version: '8.2.22'  
               }
             }
         stage('Build Docker Image'){
