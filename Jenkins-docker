@@ -48,7 +48,7 @@ pipeline{
         stage('Push Docker Image'){
              steps{
                   withCredentials([string(credentialsId: 'dockercrenditals', variable: 'dockercred')]) {
-                      sh "docker login -u manthena2020 -p ${dockercrenditals}"
+                      sh "docker login -u manthena2020 -p ${dockercred}"
             }
             sh 'docker push manthenasmiles/softwares'
         }
